@@ -1,0 +1,39 @@
+-- Create Herbal Store Database and Stats
+
+CREATE TABLE Carlys_herbs (id integer primary key, name TEXT, priceperpound INTEGER, quantity INTEGER, purchasedfrom TEXT);
+
+INSERT INTO Carlys_herbs VALUES (1, "NETTLES", 0.80, 30, "ourfriendlyallies");
+INSERT INTO Carlys_herbs VALUES (2, "Chamomille", 1.30, 15, "ourfriendlyallies");
+INSERT INTO Carlys_herbs VALUES (3, "Lemon Balm", 0.75, 58, "ourfriendlyallies");
+INSERT INTO Carlys_herbs VALUES (4, "Tulsi", 1.25, 70, "ourfriendlyallies");
+INSERT INTO Carlys_herbs VALUES (5, "Motherwort", 0.88 , 18, "ourfriendlyallies");
+INSERT INTO Carlys_herbs VALUES (6, "Mugwort",1.88, 10, "ourfriendlyallies");
+INSERT INTO Carlys_herbs VALUES (7, "FeverFew", 0.75, 22, "ourfriendlyallies");
+INSERT INTO Carlys_herbs VALUES (8, "Echinacea", 1.10, 33, "ourfriendlyallies");
+INSERT INTO Carlys_herbs VALUES (9, "Dandelion", 0.55, 43, "ourfriendlyallies");
+INSERT INTO Carlys_herbs VALUES (10, "Comfrey", 0.48, 52, "ourfriendlyallies");
+INSERT INTO Carlys_herbs VALUES (11, "Hyssop", 0.45, 12, "ourfriendlyallies");
+INSERT INTO Carlys_herbs VALUES (12, "Passionflower", 1.89, 16, "ourfriendlyallies");
+INSERT INTO Carlys_herbs VALUES (13, "Yarrow", 0.67, 20, "ourfriendlyallies");
+INSERT INTO Carlys_herbs VALUES (14, "Raspberryleaf", 1.35, 10, "ourfriendlyallies");
+INSERT INTO Carlys_herbs VALUES (15, "TulsiAmrita", 1.58, 8, "ourfriendlyallies");
+
+-- Display the database by price per pound.
+SELECT * FROM Carlys_herbs ORDER BY priceperpound;
+
+-- Display the database by quantity.
+SELECT * FROM Carlys_herbs ORDER BY quantity;
+
+-- Display herbs that are greater than or equal to 1.00 per pound. 
+SELECT * FROM Carlys_herbs 
+WHERE priceperpound >= 1.00 
+ORDER BY priceperpound;
+
+-- What is the total amount of herbs at Carlys_herbs?
+SELECT SUM (quantity) FROM Carlys_herbs;
+
+-- What is the price of the most expensive herb?
+SELECT MAX (priceperpound) FROM Carlys_herbs;
+
+-- What is the price of the least expensive herb?
+SElECT MIN (priceperpound) FROM Carlys_herbs;
