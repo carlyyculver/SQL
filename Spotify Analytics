@@ -1,6 +1,6 @@
 *For this project, I downloaded Spotify Data from Kaggle.
 *Then I created a table to insert the data into.
-*Allowing me to perform analystics on the data using SQL. 
+*Allowing me to perform analytics on the data using SQL. 
 
 *Creating the table:
 CREATE TABLE BIT_DB.Spotifydata
