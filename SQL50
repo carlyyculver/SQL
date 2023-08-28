@@ -1,4 +1,4 @@
--- Practicing my MYSQL code on the website leetcode, with SQL 50 questions. Great way to showcase my abilities with MYSQL and writiing queries. 
+-- Practicing my MYSQL code on the website leetcode, with SQL 50 questions. Great way to showcase my abilities with MYSQL and writiing queries. As well as explanations included on how I came to conclusions on what/how to write the query needed for the correct results.
 
 -- SELECT STATEMENTS --
 -- Write a solution to find the ids of products that are both low fat and recyclable.
@@ -41,4 +41,109 @@ WHERE CHAR_LENGTH(content) > 15;
 
 
 -- JOIN STATEMENTS --
---
+-- Write a solution to show the unique ID of each user, If a user does not have a unique ID replace just show null.
+-- Two tables- Employess and EmployeeUNI
+
+SELECT e.name as name, eu.unique_id as unique_id
+FROM Employees e
+LEFT JOIN EmployeeUNI eu
+ON e.id = eu.id;
+
+-- Write a solution to report the product_name, year, and price for each sale_id in the Sales table.
+
+SELECT s.year, s.price, p.product_name
+FROM Sales s
+LEFT JOIN Product p
+ON p.product_id = s.product_id;
+
+-- Write a solution to find the IDs of the users who visited without making any transactions and the number of times they made these types of visits.
+
+SELECT 
+  v.customer_id as customer_id,
+  COUNT(v.visit_id) AS Count_no_trans
+FROM 
+  Visits v
+LEFT JOIN 
+  Transactions t ON v.visit_id = t.visit_id
+WHERE
+  transaction_id IS NULL 
+GROUP BY
+  Customer_id;
+
+-- Find all dates' Id with higher temperatures compared to its previous dates (yesterday).
+(There is one table ,weather, we are using here for our query. And being asked to compare temperatures from previous dates which then it uses self join. With the Alias's W1 compared to W2 for dates and then also filtering when the temperature on current day is higher than previous day.)
+
+SELECT w1.id
+FROM Weather w1, Weather w2
+WHERE DATEDIFF(w1.recordDate, w2.recordDate) = 1
+AND w1.Temperature > w2.Temperature;
+
+-- There is a factory website that has several machines each running the same number of processes. Write a solution to find the average time each machine takes to complete a process.
+-- The resulting table should have the machine_id along with the average time as processing_time, which should be rounded to 3 decimal places.
+(So we are self joining the machine table for stat and end times for each machine id s & e (startmachine & endmachine). We find the difference by subrtracting the end timestamp with the start timestamp and the use the Average Function to calculate the average processing time, rounded to 3 decimals (details from question)).
+
+SELECT
+  s.machine_id,
+  ROUND(AVG(e.timestamp - s.timestamp),3) AS processing_time
+FROM 
+  Activity s
+JOIN 
+  Activity e ON e.machine_id = s.machine_id
+WHERE 
+  s.activity_type = 'start' AND e.activity_type = 'e'
+GROUP BY s.machine_id;
+
+-- Write an SQL query to report the name and bonus amount of each employee with a bonus less than 1000.
+( Two Tables Employee and Bonus- left join. We want results to show name and bonus that is less than 1000 (where clause) but I also noticed some employees didnt receive a bonus which we also want to show those resutls as well.)
+
+SELECT e.name, b.bonus
+FROM Employee e
+LEFT JOIN Bonus b ON e.empId = b.empId
+WHERE b.bonus > 1000 OR b.bonus IS NULL;
+
+-- Write a solution to find the number of times each student attended each exam.
+-- Return the result table ordered by student_id and subject_name.
+( 3 tables here: Students, Sujects and Examinations. We want to show all information about the student, with subject name and times the attended that exam (Count function). Cross Join is used here because we want to show every possible combination of students and subjects and a left outer join to combine resuls with examinations table.)
+
+SELECT
+  s.student_id,
+  s.student_name,
+  sub.subject_name,
+  COUNT(e.subject_name) AS attended_exams
+FROM 
+  Students s
+CROSS JOIN
+  Subjects sub
+LEFT OUTER JOIN
+  Examinations e 
+  ON s.student_id = e.student_id AND sub.subject_name = e.subject_name
+GROUP BY
+  s.student_id,
+  s.student_name,
+  sub.subject_name
+ORDER BY
+  s.student_id
+  sub.subject_name;
+
+-- Write a solution to find managers with at least five direct reports.
+( We need to join the table employee to itself to match the manager column with the emp id of the other table.) HAVING CONDITION function used to filter out managers who have less than a COUNT of 5 employee reports.)
+
+SELECT e1.name
+FROM Employee e1
+JOIN Employee e2 ON e1.id = e2.managerId
+GROUP BY e1.name, e1.id
+HAVING COUNT(e2.id) >= 5;
+
+-- Write an SQL query to find the confirmation rate of each user.
+-- The confirmation rate of a user is the number of 'confirmed' messages divided by the total number of requested confirmation messages. The confirmation rate of a user that did not request any confirmation messages is 0. Round the confirmation rate to two decimal places.
+(We are told no confirmed messages is 0 so confirmed messages would be 1 a case statement can be used here to create this clause. We also need to use the AVG function rounded to 2 decimals which this is now our confirmation rate.)
+
+SELECT 
+  s.user_id,
+  ROUND(AVG(case when c.action = 'confirmed' then 1 else 0 end) AS confirmation_rate
+FROM 
+  Signups S
+LEFT JOIN 
+  confirmations c ON s.user_id = c.user_id
+GROUP BY 
+  user_id; 
