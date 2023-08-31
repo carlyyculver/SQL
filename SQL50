@@ -156,4 +156,4 @@ FROM Cinema
 WHERE id % 2 = 1 AND description != 'boring'
 ORDER BY rating DESC;
 
---
+-- Write an SQL query to find the average selling price for each product. average_price should be rounded to 2 decimal places.
