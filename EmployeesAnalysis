@@ -1,3 +1,6 @@
+-- Querying in MySQL with a database on employee information to gain insights for a company. 
+
+
 Select *
 FROM Departments; 
 
